@@ -1,0 +1,31 @@
+---
+- name: Install packages on Ubuntu and Amazon Linux
+  hosts: all
+  become: yes
+
+  vars:
+    debian_packages:
+      - apache2
+      - nginx
+      - git
+      - curl
+      - default-jdk
+      - mariadb-server
+
+
+    redhat_packages:
+      - httpd
+      - nginx
+      - git
+      - curl
+      - java-11-openjdk
+      - mariadb-server
+
+
+  tasks:
+    - name: Install OS-specific packages
+      package:
+      name: "{{ ansible_facts.os_family == 'Debian'
+              | ternary(debian_packages, redhat_packages) }}"
+      state: present
+

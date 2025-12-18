@@ -1,0 +1,37 @@
+---
+- name: Safe package installation (All OS)
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  vars:
+    ubuntu_packages:
+      - nginx
+      - git
+      - curl
+      - default-jdk
+      - python3
+      - mysql-server
+      - apache2
+
+    amazon_packages:
+      - nginx
+      - git
+      - python3
+      - java-17-amazon-corretto
+      - mariadb105-server
+      - httpd
+      # curl-minimal is already present in AL2023
+
+  tasks:
+    - name: Install packages on Ubuntu
+      package:
+        name: "{{ ubuntu_packages }}"
+        state: present
+      when: ansible_facts.os_family == "Debian"
+
+    - name: Install packages on Amazon Linux
+      package:
+        name: "{{ amazon_packages }}"
+        state: present
+      when: ansible_facts.os_family == "RedHat"

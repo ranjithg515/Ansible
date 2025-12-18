@@ -1,0 +1,27 @@
+---
+- name: Amazon Linux Apache tasks
+  hosts: all
+  become: yes
+  tasks:
+    - name: Copy index.html
+      copy:
+        src: /home/ansible/index.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: '0644'
+      notify: restart httpd
+
+  handlers:
+    - name: restart httpd
+      when: ansible_facts['os_family'] == "RedHat"
+      service:
+        name: httpd
+        state: restarted
+        enabled: yes
+    - name: restart apache2
+      when: ansible_facts['os_family'] == "Debian"
+      service:
+        name: apache2
+        state: restarted
+        enabled: yes

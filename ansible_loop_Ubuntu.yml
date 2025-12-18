@@ -1,0 +1,21 @@
+---
+- name: Multiple software installation
+  hosts: ubuntu
+  become: yes
+
+  vars:
+    Packages_list:
+      - nginx
+      - git
+      - curl
+      - default-jdk
+      - python3
+      - mysql-server
+
+  tasks:
+
+    - name: install all listed services
+      apt:
+        name: "{{ Packages_list }}"
+        state: present
+        update_cache: yes

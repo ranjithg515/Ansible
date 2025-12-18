@@ -1,0 +1,32 @@
+---
+- name: Safe package removal (All OS)
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  vars:
+    ubuntu_packages:
+      - nginx
+      - git
+      - curl
+      - default-jdk
+      - mysql-server
+
+    amazon_packages:
+      - nginx
+      - git
+      - java-17-amazon-corretto
+      - mariadb105-server
+
+  tasks:
+    - name: Remove packages on Ubuntu
+      package:
+        name: "{{ ubuntu_packages }}"
+        state: absent
+      when: ansible_facts.os_family == "Debian"
+
+    - name: Remove packages on Amazon Linux
+      package:
+        name: "{{ amazon_packages }}"
+        state: absent
+      when: ansible_facts.os_family == "RedHat"
