@@ -25,7 +25,6 @@
   tasks:
     - name: Install OS-specific packages
       package:
-      name: "{{ ansible_facts.os_family == 'Debian'
-              | ternary(debian_packages, redhat_packages) }}"
-      state: present
-
+        name: "{{ debian_packages if ansible_facts.os_family == 'Debian'
+                 else redhat_packages }}"
+        state: present
