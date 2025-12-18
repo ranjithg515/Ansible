@@ -1,0 +1,19 @@
+---
+- name: Multiple software installation (Amazon Linux 2023)
+  hosts: amazon
+  become: yes
+  gather_facts: yes
+
+  vars:
+    Packages_list:
+      - nginx
+      - git
+      - python3
+      - java-17-amazon-corretto
+      - mariadb105-server
+
+  tasks:
+    - name: install all listed services
+      package:
+        name: "{{ Packages_list }}"
+        state: present
