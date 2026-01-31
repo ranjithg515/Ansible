@@ -1,5 +1,5 @@
 ---
-- name: Safe package removal (All OS)
+- name: Safe package removal (Ubuntu + Amazon Linux)
   hosts: all
   become: yes
   gather_facts: yes
@@ -19,14 +19,15 @@
       - mariadb105-server
 
   tasks:
+
     - name: Remove packages on Ubuntu
       package:
         name: "{{ ubuntu_packages }}"
         state: absent
-      when: ansible_facts.os_family == "Debian"
+      when: ansible_distribution == "Ubuntu"
 
     - name: Remove packages on Amazon Linux
       package:
         name: "{{ amazon_packages }}"
         state: absent
-      when: ansible_facts.os_family == "RedHat"
+      when: ansible_distribution == "Amazon"
