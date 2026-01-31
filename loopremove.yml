@@ -1,4 +1,3 @@
----
 - name: Safe package removal (Ubuntu + Amazon Linux)
   hosts: all
   become: yes
@@ -7,27 +6,34 @@
   vars:
     ubuntu_packages:
       - nginx
-      - git
-      - curl
-      - default-jdk
       - mysql-server
 
     amazon_packages:
       - nginx
-      - git
-      - java-17-amazon-corretto
-      - mariadb105-server
+      - mariadb-server
 
   tasks:
 
-    - name: Remove packages on Ubuntu
-      package:
+    - name: Stop services first
+      service:
+        name: "{{ item }}"
+        state: stopped
+      loop:
+        - nginx
+        - mysql
+        - mariadb
+      ignore_errors: yes
+
+    - name: Remove packages on Ubuntu (with purge)
+      apt:
         name: "{{ ubuntu_packages }}"
         state: absent
-      when: ansible_distribution == "Ubuntu"
+        purge: yes
+        autoremove: yes
+      when: ansible_os_family == "Debian"
 
     - name: Remove packages on Amazon Linux
-      package:
+      yum:
         name: "{{ amazon_packages }}"
         state: absent
-      when: ansible_distribution == "Amazon"
+      when: ansible_os_family == "RedHat"
