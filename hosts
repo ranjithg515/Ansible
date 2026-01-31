@@ -1,6 +1,5 @@
 [vagrant]
-192.168.56.101
-192.168.56.102
+192.168.10.12
 
 [all:vars]
 ansible_user=root
