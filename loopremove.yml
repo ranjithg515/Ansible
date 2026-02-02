@@ -11,6 +11,7 @@
     amazon_packages:
       - nginx
       - mariadb-server
+      - httpd
 
   tasks:
 

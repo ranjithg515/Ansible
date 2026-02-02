@@ -18,8 +18,6 @@
       - nginx
       - git
       - python3
-      - java-17-amazon-corretto
-      - mariadb105-server
       - httpd
       # curl-minimal is already present in AL2023
 
