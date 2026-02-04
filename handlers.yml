@@ -10,8 +10,9 @@
         owner: root
         group: root
         mode: '0644'
-      notify: restart httpd
-
+      notify: 
+        - restart httpd
+        - restart apache2
   handlers:
     - name: restart httpd
       when: ansible_facts['os_family'] == "RedHat"
